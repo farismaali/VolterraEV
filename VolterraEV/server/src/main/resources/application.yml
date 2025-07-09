@@ -1,0 +1,21 @@
+spring:
+    application:
+        name: backend
+    datasource:
+        url: jdbc:postgresql://localhost:5432/mydatabase
+        username: myuser
+        password: mypassword
+    jpa:
+        hibernate:
+            ddl-auto: update
+        properties:
+            hibernate:
+                dialect: org.hibernate.dialect.PostgreSQLDialect
+
+security:
+    jwt:
+        secret-key: Q2YxUG5KRmZnV0xvZ1k1Yk5IRlR5Qm9GMG1CMXJqd0Y
+        expiration-time: 3600000
+
+
+
