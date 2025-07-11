@@ -1,7 +1,9 @@
 package com.volterraev.controller;
 
+import com.volterraev.dto.LoanRequestDto;
 import com.volterraev.model.CarCondition;
 import com.volterraev.model.Vehicle;
+import com.volterraev.service.LoanService;
 import com.volterraev.service.VehicleService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/vehicles")
@@ -33,11 +36,28 @@ public class VehicleController {
         return vehicleService.getAllVehicle();
     }
 
-
-
     @PostMapping
     public ResponseEntity<Vehicle> saveVehicle(@Valid @RequestBody Vehicle vehicle) {
         Vehicle savedVehicle = vehicleService.saveVehicle(vehicle);
         return new ResponseEntity<>(savedVehicle, HttpStatus.CREATED);
+    }
+
+    @DeleteMapping
+    public ResponseEntity<Void> deleteVehicle(@RequestParam String vid) {
+        Long id = Long.parseLong(vid);
+        vehicleService.deleteVehicle(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/loan")
+    public ResponseEntity<Double> calculateLoan(@RequestBody LoanRequestDto loanDto) {
+        double result = LoanService.calculateLoan(
+                loanDto.getAmount(),
+                loanDto.getDownPayment(),
+                loanDto.getTerm(),
+                Optional.ofNullable(loanDto.getInterestRate())
+        );
+
+        return ResponseEntity.ok(result);
     }
 }

@@ -15,13 +15,17 @@ import lombok.Setter;
 public class Vehicle {
     public Vehicle() {}
     @Id
-    @NotNull(message = "Vehicle ID must not be null")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long vid;
 
     @NotBlank(message = "Name is required")
     @Size(max = 100, message = "Name can't exceed 100 characters")
     @Column(nullable = false, length = 100)
     private String name;
+
+    @NotNull
+    @Column(nullable = false)
+    private Double price;
 
     @Size(max = 500, message = "Description can't exceed 500 characters")
     @Column(length = 500)
