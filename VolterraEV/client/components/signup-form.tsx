@@ -14,8 +14,8 @@ export function SignupForm({
       </div>
       <div className="grid gap-6">
         <div className="grid gap-3">
-          <Label htmlFor="email">Username</Label>
-          <Input id="email" type="email" placeholder="username123" required />
+          <Label htmlFor="username">Username</Label>
+          <Input id="username" name="username" type="text" required />
         </div>
         <div className="grid gap-3">
           <div className="flex items-center">
