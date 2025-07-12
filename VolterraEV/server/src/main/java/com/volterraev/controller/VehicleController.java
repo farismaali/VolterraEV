@@ -1,7 +1,10 @@
 package com.volterraev.controller;
 
+import com.volterraev.dto.AccidentRequestDto;
 import com.volterraev.dto.LoanRequestDto;
-import com.volterraev.model.CarCondition;
+import com.volterraev.dto.VehicleDto;
+import com.volterraev.model.AccidentHistory;
+import com.volterraev.model.CarShape;
 import com.volterraev.model.Vehicle;
 import com.volterraev.service.LoanService;
 import com.volterraev.service.VehicleService;
@@ -24,15 +27,7 @@ public class VehicleController {
     }
 
     @GetMapping
-    public Iterable<Vehicle> getVehicles(@RequestParam(required = false) String condition) {
-        if (condition != null) {
-            try {
-                CarCondition carCondition = CarCondition.valueOf(condition.toUpperCase());
-                return vehicleService.getVehicleByCondition(carCondition);
-            } catch (IllegalArgumentException e) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid car condition: " + condition);
-            }
-        }
+    public Iterable<Vehicle> getAllVehicles() {
         return vehicleService.getAllVehicle();
     }
 
@@ -59,5 +54,28 @@ public class VehicleController {
         );
 
         return ResponseEntity.ok(result);
+    }
+
+    @PostMapping("accident/{vehicleId}")
+    public ResponseEntity<AccidentHistory> addAccidentToVehicle(
+            @PathVariable("vehicleId") Long vehicleId,
+            @RequestBody AccidentRequestDto accidentDto) {
+
+        AccidentHistory savedAccident = vehicleService.addAccident(vehicleId, accidentDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedAccident);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Vehicle> updateVehicle(
+            @PathVariable Long id,
+            @RequestBody VehicleDto vehicleDto) {
+
+        Vehicle updatedVehicle = vehicleService.updateVehicle(id, vehicleDto);
+        return ResponseEntity.ok(updatedVehicle);
+    }
+
+    @GetMapping("accident/{vehicleId}")
+    public List<AccidentHistory> getAccidentsByVehicleId(@PathVariable("vehicleId") Long vehicleId) {
+        return vehicleService.getAccidentsByVehicleId(vehicleId);
     }
 }
