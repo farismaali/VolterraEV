@@ -34,6 +34,7 @@ public class SecurityConfiguration {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers("/api/cart/**").permitAll() // faris added this for testing
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session
