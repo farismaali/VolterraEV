@@ -5,6 +5,7 @@ import com.volterraev.dto.LoanRequestDto;
 import com.volterraev.dto.VehicleDto;
 import com.volterraev.model.AccidentHistory;
 import com.volterraev.model.CarShape;
+// import com.volterraev.model.CarShape;
 import com.volterraev.model.Vehicle;
 import com.volterraev.service.LoanService;
 import com.volterraev.service.VehicleService;
@@ -12,13 +13,13 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
+// import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/vehicles")
+@RequestMapping("/api/vehicles")
 public class VehicleController {
     private VehicleService vehicleService;
 
@@ -50,8 +51,7 @@ public class VehicleController {
                 loanDto.getAmount(),
                 loanDto.getDownPayment(),
                 loanDto.getTerm(),
-                Optional.ofNullable(loanDto.getInterestRate())
-        );
+                Optional.ofNullable(loanDto.getInterestRate()));
 
         return ResponseEntity.ok(result);
     }
@@ -78,4 +78,23 @@ public class VehicleController {
     public List<AccidentHistory> getAccidentsByVehicleId(@PathVariable("vehicleId") Long vehicleId) {
         return vehicleService.getAccidentsByVehicleId(vehicleId);
     }
+
+    @GetMapping("/sorted")
+    public ResponseEntity<List<Vehicle>> getSortedVehicles(
+            @RequestParam(defaultValue = "price") String sortBy,
+            @RequestParam(defaultValue = "asc") String order) {
+        return ResponseEntity.ok(vehicleService.getSortedVehicles(sortBy, order));
+    }
+
+    @GetMapping("/filter")
+    public ResponseEntity<List<Vehicle>> filterVehicles(
+            @RequestParam(required = false) String brand,
+            @RequestParam(required = false) String model,
+            @RequestParam(required = false) Integer year,
+            @RequestParam(required = false) CarShape shape,
+            @RequestParam(required = false) Boolean isHotDeal) {
+        List<Vehicle> filtered = vehicleService.filterVehicles(brand, model, year, shape, isHotDeal);
+        return ResponseEntity.ok(filtered);
+    }
+
 }

@@ -20,7 +20,6 @@ public class CartController {
 
     @PostMapping("/add")
     public ResponseEntity<Cart> addToCart(@RequestBody CartDto dto) {
-        System.out.println("Received DTO: " + dto.getUserId() + ", " + dto.getVehicleId() + ", " + dto.getQuantity());
         Cart item = cartService.addToCart(dto.getUserId(), dto.getVehicleId(), dto.getQuantity());
         return ResponseEntity.ok(item);
     }

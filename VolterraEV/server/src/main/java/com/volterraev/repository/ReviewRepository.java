@@ -1,14 +1,14 @@
 package com.volterraev.repository;
 
-
-import com.volterraev.model.CarShape;
+import com.volterraev.model.Review;
 import com.volterraev.model.Vehicle;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
-public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
-    List<Vehicle> findByShape(CarShape condition);
+public interface ReviewRepository extends JpaRepository<Review, Long> {
+    List<Review> findByVehicle(Vehicle vehicle);
 }

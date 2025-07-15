@@ -11,12 +11,13 @@ import lombok.Setter;
 import java.util.ArrayList;
 import java.util.List;
 
-
 @Getter
 @Setter
 @Entity
 public class Vehicle {
-    public Vehicle() {}
+    public Vehicle() {
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long vid;
@@ -24,6 +25,10 @@ public class Vehicle {
     @NotNull
     @Column(nullable = false)
     private Double price;
+
+    @NotNull
+    @Column(nullable = false)
+    private int mileage;
 
     @NotNull
     @Column(nullable = false)
@@ -47,6 +52,9 @@ public class Vehicle {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private CarShape shape;
+
+    @Column(name = "is_hot_deal")
+    private boolean isHotDeal;
 
     @OneToMany(mappedBy = "vehicle", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference

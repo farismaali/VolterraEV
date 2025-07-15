@@ -13,4 +13,5 @@ public class VehicleDto {
     private String model;
     private int year;
     private CarShape shape;
+    private boolean isHotDeal;
 }
