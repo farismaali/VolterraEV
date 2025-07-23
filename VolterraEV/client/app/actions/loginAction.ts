@@ -1,42 +1,31 @@
-"use server"
+'use server'
 
-import {cookies} from "next/headers";
+import { signIn } from "@/auth"
+import { AuthError } from "next-auth"
+import {redirect} from "next/navigation";
+import {ActionResponse, User} from "@/types/account-types"
 
-export default async function loginAction(prev, formData: FormData) {
-    const username = formData.get("username");
-    const password = formData.get("password");
-
+export default async function LoginAction(prevState: ActionResponse, formData: FormData): Promise<ActionResponse> {
+    let user: User = {
+        username : formData.get("username") as string,
+        password: formData.get("password") as string
+    }
     try {
-        const response = await fetch("http://localhost:8080/auth/login", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                "username" : username,
-                "password" : password
-            }),
+        await signIn("credentials", {
+            redirect: false,
+            username: user.username,
+            password: user.password
         })
-        if(!response.ok) {
-            throw new Error("Login failed please tr again");
+
+    } catch (error) {
+        console.log(error)
+        if (error instanceof AuthError && error.type === "CredentialsSignin") {
+            return { success: false, message: "Invalid credentials" }
+        } else {
+            return { success: false, message: "unexpected failure"}
         }
-        const data = await response.json();
-        const accessToken = data.token;
-
-        const cookieStore = await cookies();
-        cookieStore.set({
-            name: "accessToken",
-            value: accessToken,
-            httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
-            path: "/",
-            maxAge: 60 * 60 * 24,
-        });
-
-        return { success: true };
-    }catch (error) {
-        console.error(error);
-        return { success: false, message: error.message};
 
     }
+
+    redirect("/dashboard")
 }

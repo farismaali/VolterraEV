@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import {useActionState, useEffect} from "react";
-import loginAction from "@/app/actions/loginAction";
+import LoginAction from "@/app/actions/loginAction";
 import { useRouter } from "next/navigation";
 
 
@@ -13,11 +13,11 @@ export function LoginForm({
   ...props
 }: React.ComponentProps<"form">) {
   const router = useRouter();
-  const [state, formAction, isPending] = useActionState(loginAction, null);
+  const [state, formAction, isPending] = useActionState(LoginAction, null);
   console.log(state);
   useEffect(() => {
     if (state?.success === true) {
-      router.push("/home");
+      router.push("/dashboard");
     }
   }, [state])
   return (
