@@ -1,6 +1,6 @@
 const getVehicles = async (token:string) => {
     await new Promise(resolve => setTimeout(resolve, 2000));
-    const response = await fetch("http://localhost:8080/vehicles", {
+    const response = await fetch("http://localhost:8080/api/vehicles", {
         method: "GET",
         headers: {
             "Authorization": `Bearer ${token}`,
