@@ -36,9 +36,15 @@ const VehicleList = ({promise}:Promise<any>)=> {
         setVehicles(data);
     };
 
-    const handleReset = () => {
+    const handleReset = async ()  => {
         setParams(initialParams);
-        handleFilter()
+        const response = await fetch(`http://localhost:8080/api/vehicles`)
+        if (!response.ok) {
+            throw new Error(response.statusText);
+        }
+
+        const data = await response.json();
+        setVehicles(data);
     }
 
     return (
@@ -90,7 +96,7 @@ const VehicleList = ({promise}:Promise<any>)=> {
 
                     <div className="flex items-center gap-1 mt-5">
                         <input
-                            value={params.isHotDeal}
+                            checked={params.isHotDeal == null ? false : params.isHotDeal}
                             type="checkbox"
                             onChange={(e) => setParams(prev => ({...prev, isHotDeal: e.target.checked}))}
                             className="w-3 h-3"
