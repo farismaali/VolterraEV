@@ -6,6 +6,7 @@ import { ShoppingCart, Calendar, AlertTriangle } from "lucide-react"
 import Image from "next/image"
 import {useState} from "react";
 import AccidentModal from "@/components/accident-modal";
+import {signOut} from "next-auth/react";
 const vehicle = {
     vid: 102,
     price: 35000.0,
