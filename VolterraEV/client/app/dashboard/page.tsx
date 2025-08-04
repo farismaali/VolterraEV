@@ -8,7 +8,7 @@ import SignOutButton from "@/components/sign-out";
 export default async function DashBoard() {
     const session = await auth();
     console.log("This is the user session:"+ session.user.id)
-    const data = await getVehicles(session.user.accessToken); 
+    const data = getVehicles(session.user.accessToken);
 
     return (
         <div className="text-4xl">
@@ -27,8 +27,9 @@ export default async function DashBoard() {
             <div className={"flex justify-center"}>
                 <main className={"container h-screen border overflow-scroll"}>
                     <div className="grid grid-cols-1 justify-items-center gap-4 p-2">
-                        <VehicleList promise={Promise.resolve(data)} session = {session} />
-                        {/* Suspense is not necessary here since we already awaited */}
+                        <Suspense fallback={<VehicleLoadingPage/>}>
+                            <VehicleList promise={data} session = {session} />
+                        </Suspense>
                     </div>
                 </main>
             </div>
