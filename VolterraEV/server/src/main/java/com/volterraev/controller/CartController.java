@@ -21,9 +21,10 @@ public class CartController {
     @PostMapping("/add")
     public ResponseEntity<Cart> addToCart(@RequestBody CartDto dto) {
         Cart item = cartService.addToCart(dto.getUserId(), dto.getVehicleId(), dto.getQuantity());
+        System.out.println("Received user ID: " + dto.getUserId());
+        System.out.println("Received vehicle ID: " + dto.getVehicleId());
         return ResponseEntity.ok(item);
     }
-
 
     @GetMapping("/{userId}")
     public ResponseEntity<List<Cart>> getCart(@PathVariable Long userId) {
@@ -42,4 +43,3 @@ public class CartController {
         return ResponseEntity.noContent().build();
     }
 }
-

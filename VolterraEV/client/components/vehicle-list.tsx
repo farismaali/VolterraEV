@@ -1,7 +1,7 @@
 "use client"
-import {use, useState} from "react";
-import {Vehicle} from "@/components/vehicle";
-import {Button} from "@/components/ui/button";
+import { use, useState } from "react";
+import { Vehicle } from "@/components/vehicle";
+import { Button } from "@/components/ui/button";
 
 type paramOptions = {
     brand: string,
@@ -9,13 +9,14 @@ type paramOptions = {
     year: number,
     shape: string,
     isHotDeal: boolean | null,
+    sortBy?: string;
+    sortOrder?: string;
 }
-const VehicleList = ({promise}:Promise<any>)=> {
-    const initialParams = {brand: "", isHotDeal: null, model: "", shape: "", year: 0}
+const VehicleList = ({ promise }: Promise<any>) => {
+    const initialParams = { brand: "", isHotDeal: null, model: "", shape: "", year: 0, sortBy: "", sortOrder: "asc" }
     const data = use(promise);
-    const [vehicles, setVehicles]= useState(data);
+    const [vehicles, setVehicles] = useState(data);
     const [params, setParams] = useState<paramOptions>(initialParams);
-
 
     const handleFilter = async () => {
         const query = new URLSearchParams();
@@ -25,6 +26,8 @@ const VehicleList = ({promise}:Promise<any>)=> {
         if (params.shape.trim()) query.append("shape", params.shape);
         if (params.year !== 0) query.append("year", params.year.toString());
         if (params.isHotDeal !== null) query.append("isHotDeal", params.isHotDeal.toString());
+        if (params.sortBy) query.append("sortBy", params.sortBy);
+        if (params.sortOrder) query.append("sortOrder", params.sortOrder);
         console.log("query", query.toString());
         const response = await fetch(`http://localhost:8080/api/vehicles/filter?${query.toString()}`);
 
@@ -36,7 +39,7 @@ const VehicleList = ({promise}:Promise<any>)=> {
         setVehicles(data);
     };
 
-    const handleReset = async ()  => {
+    const handleReset = async () => {
         setParams(initialParams);
         const response = await fetch(`http://localhost:8080/api/vehicles`)
         if (!response.ok) {
@@ -57,7 +60,7 @@ const VehicleList = ({promise}:Promise<any>)=> {
                             value={params.brand}
                             placeholder="Toyota"
                             className="px-2 py-1 border rounded text-sm w-28"
-                            onChange={(e) => setParams(prev => ({...prev, brand :e.target.value}) )}
+                            onChange={(e) => setParams(prev => ({ ...prev, brand: e.target.value }))}
                         />
                     </div>
 
@@ -67,7 +70,7 @@ const VehicleList = ({promise}:Promise<any>)=> {
                             value={params.model}
                             placeholder="Camry"
                             className="px-2 py-1 border rounded text-sm w-28"
-                            onChange={(e) => setParams(prev => ({...prev, model :e.target.value}))}
+                            onChange={(e) => setParams(prev => ({ ...prev, model: e.target.value }))}
                         />
                     </div>
 
@@ -80,7 +83,7 @@ const VehicleList = ({promise}:Promise<any>)=> {
                             max={2026}
                             defaultValue={2025}
                             className="px-2 py-1 border rounded text-sm w-24"
-                            onChange={(e) => setParams(prev => ({...prev, year: Number(e.target.value)}))}
+                            onChange={(e) => setParams(prev => ({ ...prev, year: Number(e.target.value) }))}
                         />
                     </div>
 
@@ -90,7 +93,7 @@ const VehicleList = ({promise}:Promise<any>)=> {
                             value={params.shape}
                             placeholder="SEDAN"
                             className="px-2 py-1 border rounded text-sm w-28"
-                            onChange={(e) => setParams(prev => ({...prev, shape:(e.target.value)}))}
+                            onChange={(e) => setParams(prev => ({ ...prev, shape: (e.target.value) }))}
                         />
                     </div>
 
@@ -98,10 +101,33 @@ const VehicleList = ({promise}:Promise<any>)=> {
                         <input
                             checked={params.isHotDeal == null ? false : params.isHotDeal}
                             type="checkbox"
-                            onChange={(e) => setParams(prev => ({...prev, isHotDeal: e.target.checked}))}
+                            onChange={(e) => setParams(prev => ({ ...prev, isHotDeal: e.target.checked }))}
                             className="w-3 h-3"
                         />
                         <label className="text-xs text-gray-600">Hot Deal?</label>
+                    </div>
+
+                    <div className="flex flex-col items-start">
+                        <label className="text-xs text-gray-600 mb-1">Sort By</label>
+                        <select
+                            className="px-2 py-1 border rounded text-sm w-28"
+                            onChange={(e) => setParams(prev => ({ ...prev, sortBy: e.target.value }))}
+                        >
+                            <option value="">None</option>
+                            <option value="price">Price</option>
+                            <option value="mileage">Mileage</option>
+                        </select>
+                    </div>
+
+                    <div className="flex flex-col items-start">
+                        <label className="text-xs text-gray-600 mb-1">Sort Order</label>
+                        <select
+                            className="px-2 py-1 border rounded text-sm w-28"
+                            onChange={(e) => setParams(prev => ({ ...prev, sortOrder: e.target.value }))}
+                        >
+                            <option value="asc">Low-High</option>
+                            <option value="desc">High-Low</option>
+                        </select>
                     </div>
                 </div>
             </div>
@@ -114,7 +140,7 @@ const VehicleList = ({promise}:Promise<any>)=> {
             </div>
 
             {vehicles.map((vehicle) => {
-                return <Vehicle key={vehicle.vid} vehicle={vehicle}/>
+                return <Vehicle key={vehicle.vid} vehicle={vehicle} />
             })}
         </>
     );

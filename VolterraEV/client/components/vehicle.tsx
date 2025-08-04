@@ -7,6 +7,8 @@ import Image from "next/image"
 import {useState} from "react";
 import AccidentModal from "@/components/accident-modal";
 import {signOut} from "next-auth/react";
+import { addToCart } from "@/lib/cartApi";
+import { useSession } from "next-auth/react";
 const vehicle = {
     vid: 102,
     price: 35000.0,
@@ -29,10 +31,32 @@ const vehicle = {
     ],
 }
 
+
+
 export function Vehicle({vehicle}) {
-    const handleAddToCart = () => {
+    const { data: session, status } = useSession();
+    const handleAddToCart = async () =>  {
         console.log("Added to cart:", vehicle.vid)
-        // Add your cart logic here
+        if (status === "loading") return;
+        console.log("Raw session object:", session);
+        console.log("session?.user?.id:", session?.user?.id);
+
+        const userId = parseInt(session?.user?.id || "");
+        
+        console.log("User session ID:", userId);
+        console.log("Sending to backend:", { userId, vehicleId: vehicle.vid });
+        if (!userId || isNaN(userId)) {
+            console.error("invalid userId in session: ", session?.user);
+            alert("You must be logged in to add to cart.");
+            return;
+        }
+        try {
+            await addToCart(userId, vehicle.vid, 1);
+            alert("Vehicle added to cart!");
+        } catch (error) {
+            console.error("Failed to add to cart", error);
+            alert("Something went wrong.");
+        }
     }
 
     return (

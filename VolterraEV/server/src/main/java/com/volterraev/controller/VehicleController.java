@@ -79,12 +79,12 @@ public class VehicleController {
         return vehicleService.getAccidentsByVehicleId(vehicleId);
     }
 
-    @GetMapping("/sorted")
-    public ResponseEntity<List<Vehicle>> getSortedVehicles(
-            @RequestParam(defaultValue = "price") String sortBy,
-            @RequestParam(defaultValue = "asc") String order) {
-        return ResponseEntity.ok(vehicleService.getSortedVehicles(sortBy, order));
-    }
+    // @GetMapping("/sorted")
+    // public ResponseEntity<List<Vehicle>> getSortedVehicles(
+    //         @RequestParam(defaultValue = "price") String sortBy,
+    //         @RequestParam(defaultValue = "asc") String order) {
+    //     return ResponseEntity.ok(vehicleService.getSortedVehicles(sortBy, order));
+    // }
 
     @GetMapping("/filter")
     public ResponseEntity<List<Vehicle>> filterVehicles(
@@ -92,8 +92,10 @@ public class VehicleController {
             @RequestParam(required = false) String model,
             @RequestParam(required = false) Integer year,
             @RequestParam(required = false) CarShape shape,
-            @RequestParam(required = false) Boolean isHotDeal) {
-        List<Vehicle> filtered = vehicleService.filterVehicles(brand, model, year, shape, isHotDeal);
+            @RequestParam(required = false) Boolean isHotDeal, 
+            @RequestParam(required = false) String sortBy,
+            @RequestParam(required = false) String sortOrder) {
+        List<Vehicle> filtered = vehicleService.filterVehicles(brand, model, year, shape, isHotDeal, sortBy, sortOrder);
         return ResponseEntity.ok(filtered);
     }
 

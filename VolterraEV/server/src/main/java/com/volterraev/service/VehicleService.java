@@ -68,34 +68,63 @@ public class VehicleService {
         return accidentRepository.findByVehicleVid(vid);
     }
 
-    public List<Vehicle> getSortedVehicles(String sortBy, String order) {
-        List<Vehicle> vehicles = vehicleRepository.findAll();
+    // public List<Vehicle> getSortedVehicles(String sortBy, String order) {
+    //     List<Vehicle> vehicles = vehicleRepository.findAll();
 
+    //     Comparator<Vehicle> comparator;
+
+    //     switch (sortBy) {
+    //         case "price" -> comparator = Comparator.comparing(Vehicle::getPrice);
+    //         case "mileage" -> comparator = Comparator.comparing(Vehicle::getMileage);
+    //         default -> throw new IllegalArgumentException("Invalid sort field: " + sortBy);
+    //     }
+
+    //     if (order.equalsIgnoreCase("desc")) {
+    //         comparator = comparator.reversed();
+    //     }
+
+    //     vehicles.sort(comparator);
+    //     return vehicles;
+    // }
+
+    // public List<Vehicle> filterVehicles(String brand, String model, Integer year, CarShape shape, Boolean isHotDeal, String sortBy, String sortOrder) {
+    //     List<Vehicle> all = vehicleRepository.findAll();
+    //     return all.stream()
+    //             .filter(v -> brand == null || v.getBrand().equalsIgnoreCase(brand))
+    //             .filter(v -> model == null || v.getModel().equalsIgnoreCase(model))
+    //             .filter(v -> year == null || v.getYear() == year)
+    //             .filter(v -> shape == null || v.getShape() == shape)
+    //             .filter(v -> isHotDeal == null || v.isHotDeal() == isHotDeal)
+    //             .collect(Collectors.toList());
+    // }
+    
+    public List<Vehicle> filterVehicles(String brand, String model, Integer year, CarShape shape, Boolean isHotDeal, String sortBy, String sortOrder) {
+    List<Vehicle> filtered = vehicleRepository.findAll().stream()
+            .filter(v -> brand == null || v.getBrand().equalsIgnoreCase(brand))
+            .filter(v -> model == null || v.getModel().equalsIgnoreCase(model))
+            .filter(v -> year == null || v.getYear() == year)
+            .filter(v -> shape == null || v.getShape() == shape)
+            .filter(v -> isHotDeal == null || v.isHotDeal() == isHotDeal)
+            .collect(Collectors.toList());
+
+    if (sortBy != null && !sortBy.isEmpty()) {
         Comparator<Vehicle> comparator;
 
-        switch (sortBy) {
+        switch (sortBy.toLowerCase()) {
             case "price" -> comparator = Comparator.comparing(Vehicle::getPrice);
             case "mileage" -> comparator = Comparator.comparing(Vehicle::getMileage);
             default -> throw new IllegalArgumentException("Invalid sort field: " + sortBy);
         }
 
-        if (order.equalsIgnoreCase("desc")) {
+        if ("desc".equalsIgnoreCase(sortOrder)) {
             comparator = comparator.reversed();
         }
 
-        vehicles.sort(comparator);
-        return vehicles;
+        filtered.sort(comparator);
     }
 
-    public List<Vehicle> filterVehicles(String brand, String model, Integer year, CarShape shape, Boolean isHotDeal) {
-        List<Vehicle> all = vehicleRepository.findAll();
-        return all.stream()
-                .filter(v -> brand == null || v.getBrand().equalsIgnoreCase(brand))
-                .filter(v -> model == null || v.getModel().equalsIgnoreCase(model))
-                .filter(v -> year == null || v.getYear() == year)
-                .filter(v -> shape == null || v.getShape() == shape)
-                .filter(v -> isHotDeal == null || v.isHotDeal() == isHotDeal)
-                .collect(Collectors.toList());
-    }
+    return filtered;
+}
+
 
 }
