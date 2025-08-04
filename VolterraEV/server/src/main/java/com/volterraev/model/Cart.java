@@ -15,7 +15,7 @@ public class Cart {
     private Long id;
 
     @Column(nullable = false)
-    private Long userId;
+    private String userId;
 
     @Column(nullable = false)
     private Long vehicleId;
@@ -25,7 +25,7 @@ public class Cart {
 
     public Cart() {}
 
-    public Cart(Long userId, Long vehicleId, int quantity) {
+    public Cart(String userId, Long vehicleId, int quantity) {
         this.userId = userId;
         this.vehicleId = vehicleId;
         this.quantity = quantity;
@@ -39,11 +39,11 @@ public class Cart {
         this.id = id;
     }
 
-    public Long getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(Long userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 

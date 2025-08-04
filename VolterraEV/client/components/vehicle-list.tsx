@@ -12,7 +12,7 @@ type paramOptions = {
     sortBy?: string;
     sortOrder?: string;
 }
-const VehicleList = ({ promise }: Promise<any>) => {
+const VehicleList = ({ promise, session }: Promise<any>) => {
     const initialParams = { brand: "", isHotDeal: null, model: "", shape: "", year: 0, sortBy: "", sortOrder: "asc" }
     const data = use(promise);
     const [vehicles, setVehicles] = useState(data);
@@ -140,7 +140,7 @@ const VehicleList = ({ promise }: Promise<any>) => {
             </div>
 
             {vehicles.map((vehicle) => {
-                return <Vehicle key={vehicle.vid} vehicle={vehicle} />
+                return <Vehicle key={vehicle.vid} vehicle={vehicle} session = {session} />
             })}
         </>
     );

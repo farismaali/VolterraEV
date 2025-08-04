@@ -2,9 +2,9 @@ spring:
     application:
         name: backend
     datasource:
-        url: jdbc:postgresql://localhost:5432/mydatabase
-        username: myuser
-        password: mypassword
+        url: jdbc:postgresql://db.qvvdsbcfxeaevaiculvd.supabase.co:5432/postgres?sslmode=require
+        username: postgres
+        password: volteraEV123
     jpa:
         hibernate:
             ddl-auto: update
@@ -16,6 +16,4 @@ security:
     jwt:
         secret-key: Q2YxUG5KRmZnV0xvZ1k1Yk5IRlR5Qm9GMG1CMXJqd0Y
         expiration-time: 3600000
-
-
 

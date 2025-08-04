@@ -27,7 +27,7 @@ public class CartController {
     }
 
     @GetMapping("/{userId}")
-    public ResponseEntity<List<Cart>> getCart(@PathVariable Long userId) {
+    public ResponseEntity<List<Cart>> getCart(@PathVariable String userId) {
         return ResponseEntity.ok(cartService.getUserCart(userId));
     }
 
@@ -38,7 +38,7 @@ public class CartController {
     }
 
     @DeleteMapping("/clear/{userId}")
-    public ResponseEntity<Void> clearCart(@PathVariable Long userId) {
+    public ResponseEntity<Void> clearCart(@PathVariable String userId) {
         cartService.clearCart(userId);
         return ResponseEntity.noContent().build();
     }

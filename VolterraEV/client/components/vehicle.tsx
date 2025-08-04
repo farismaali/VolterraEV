@@ -4,52 +4,27 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { ShoppingCart, Calendar, AlertTriangle } from "lucide-react"
 import Image from "next/image"
-import {useState} from "react";
+import { useState } from "react";
 import AccidentModal from "@/components/accident-modal";
-import {signOut} from "next-auth/react";
+import { signOut } from "next-auth/react";
 import { addToCart } from "@/lib/cartApi";
 import { useSession } from "next-auth/react";
-const vehicle = {
-    vid: 102,
-    price: 35000.0,
-    year: 2014,
-    description: "Reliable family sedan",
-    brand: "Nissan",
-    model: "Altima",
-    shape: "SEDAN",
-    accidentHistories: [
-        {
-            id: 152,
-            accidentDate: "2024-05-01",
-            description: "Rear-end collision at intersection",
-        },
-        {
-            id: 153,
-            accidentDate: "2025-05-01",
-            description: "t-bone",
-        },
-    ],
-}
 
 
-
-export function Vehicle({vehicle}) {
-    const { data: session, status } = useSession();
-    const handleAddToCart = async () =>  {
+export function Vehicle({ vehicle, session }) {
+    const handleAddToCart = async () => {
         console.log("Added to cart:", vehicle.vid)
+        console.log(session)
         if (status === "loading") return;
-        console.log("Raw session object:", session);
-        console.log("session?.user?.id:", session?.user?.id);
 
-        const userId = parseInt(session?.user?.id || "");
-        
-        console.log("User session ID:", userId);
-        console.log("Sending to backend:", { userId, vehicleId: vehicle.vid });
-        if (!userId || isNaN(userId)) {
-            console.error("invalid userId in session: ", session?.user);
+        const userId = session?.user?.id;
+
+        if (!userId) {
+            console.error("Invalid userId in session: ", session?.user);
             alert("You must be logged in to add to cart.");
             return;
         }
+
         try {
             await addToCart(userId, vehicle.vid, 1);
             alert("Vehicle added to cart!");

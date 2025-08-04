@@ -1,23 +1,23 @@
 package com.volterraev.dto;
 
 public class CartDto {
-    private Long userId;
+    private String userId;
     private Long vehicleId;
     private int quantity;
 
     public CartDto() {}
 
-    public CartDto(Long userId, Long vehicleId, int quantity) {
+    public CartDto(String userId, Long vehicleId, int quantity) {
         this.userId = userId;
         this.vehicleId = vehicleId;
         this.quantity = quantity;
     }
 
-    public Long getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(Long userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 

@@ -16,7 +16,7 @@ public class CartService {
         this.cartRepository = cartRepository;
     }
 
-    public Cart addToCart(Long userId, Long vehicleId, int quantity) {
+    public Cart addToCart(String userId, Long vehicleId, int quantity) {
         Optional<Cart> existing = cartRepository.findByUserIdAndVehicleId(userId, vehicleId);
 
         if (existing.isPresent()) {
@@ -29,15 +29,15 @@ public class CartService {
         return cartRepository.save(newItem);
     }
 
-    public List<Cart> getUserCart(Long userId) {
+    public List<Cart> getUserCart(String userId) {
         return cartRepository.findByUserId(userId);
     }
 
-    public void removeFromCart(Long userId, Long vehicleId) {
+    public void removeFromCart(String userId, Long vehicleId) {
         cartRepository.deleteByUserIdAndVehicleId(userId, vehicleId);
     }
 
-    public void clearCart(Long userId) {
+    public void clearCart(String userId) {
         List<Cart> items = cartRepository.findByUserId(userId);
         cartRepository.deleteAll(items);
     }
