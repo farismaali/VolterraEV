@@ -42,7 +42,7 @@ const AccidentModal = ({ trigger, accidents }: AccidentModalProps) => {
                                                     {new Date(accident.accidentDate).toLocaleDateString()}
                                                 </span>
                                             </div>
-                                            <p className="ml-5 text-sm">{accident.description}</p>
+                                            <span className="ml-5 text-sm">{accident.description}</span>
                                         </div>
                                     ))}
                                 </div>

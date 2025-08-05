@@ -55,8 +55,12 @@ export function Vehicle({ vehicle, session }) {
 
                 <CardContent className="space-y-3">
                     <div className="flex items-center justify-center py-2 border-t border-b">
-                        <span className="text-2xl font-bold text-green-600">
+                        <span className="flex text-2xl font-bold text-green-600">
                             ${vehicle.price.toLocaleString()}
+
+                        </span>
+                        <span className="ml-2 text-sm text-primary">
+                            <a className={"hover: cursor-pointer"}> need a loan?</a>
                         </span>
                     </div>
 
@@ -71,7 +75,6 @@ export function Vehicle({ vehicle, session }) {
                         />
                     </div>
                 </CardContent>
-
                 <CardFooter className="flex gap-3 pt-3 border-t">
                     <AccidentModal
                         trigger={
