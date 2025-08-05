@@ -47,7 +47,7 @@ const AccidentModal = ({ trigger, accidents }: AccidentModalProps) => {
                                     ))}
                                 </div>
                             ) : (
-                                <p className="italic text-sm">No reported accidents.</p>
+                                <span className="italic text-sm">No reported accidents.</span>
                             )}
                         </div>
                     </DialogDescription>
