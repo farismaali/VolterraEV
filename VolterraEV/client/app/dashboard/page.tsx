@@ -6,6 +6,7 @@ import VehicleLoadingPage from "@/components/loading-page";
 import SignOutButton from "@/components/sign-out";
 import Link from "next/link";
 import { ShoppingCart } from "lucide-react";
+import EcommerceChatbot from "@/components/chatbot";
 
 export default async function DashBoard() {
     const session = await auth();
@@ -36,6 +37,8 @@ export default async function DashBoard() {
                         </Suspense>
                     </div>
                 </main>
+                <EcommerceChatbot/>
+
             </div>
         </div>
     );
