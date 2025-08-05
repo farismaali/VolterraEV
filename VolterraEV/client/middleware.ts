@@ -31,7 +31,7 @@
 // }
 
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from "@/auth";
+import { auth } from "./auth";
 
 // Define which routes require authentication
 const protectedRoutes: string[] = ["/dashboard", "/cart", "/checkout"];
