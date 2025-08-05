@@ -9,6 +9,7 @@ import AccidentModal from "@/components/accident-modal";
 import { signOut } from "next-auth/react";
 import { addToCart } from "@/lib/cartApi";
 import { useSession } from "next-auth/react";
+import {LoanModal} from "@/components/loan-modal";
 
 
 export function Vehicle({ vehicle, session }) {
@@ -60,7 +61,14 @@ export function Vehicle({ vehicle, session }) {
 
                         </span>
                         <span className="ml-2 text-sm text-primary">
-                            <a className={"hover: cursor-pointer"}> need a loan?</a>
+                            <LoanModal
+                                trigger={
+                                    <a className={"hover: cursor-pointer"}> need a loan?</a>
+                                }
+                                session = {session}
+                                vehicle = {vehicle}
+
+                            />
                         </span>
                     </div>
 
