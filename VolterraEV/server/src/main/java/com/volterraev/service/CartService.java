@@ -1,7 +1,11 @@
 package com.volterraev.service;
 
+import com.volterraev.dto.CartResponseDto;
 import com.volterraev.model.Cart;
+import com.volterraev.model.Vehicle;
 import com.volterraev.repository.CartRepository;
+import com.volterraev.repository.VehicleRepository;
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,9 +15,11 @@ import java.util.Optional;
 public class CartService {
 
     private final CartRepository cartRepository;
+    private final VehicleRepository vehicleRepository;
 
-    public CartService(CartRepository cartRepository) {
+    public CartService(CartRepository cartRepository, VehicleRepository vehicleRepository) {
         this.cartRepository = cartRepository;
+        this.vehicleRepository = vehicleRepository;
     }
 
     public Cart addToCart(String userId, Long vehicleId, int quantity) {
@@ -40,5 +46,15 @@ public class CartService {
     public void clearCart(String userId) {
         List<Cart> items = cartRepository.findByUserId(userId);
         cartRepository.deleteAll(items);
+    }
+
+    public List<CartResponseDto> getUserCartWithVehicle(String userId) {
+        List<Cart> items = cartRepository.findByUserId(userId);
+        return items.stream()
+                .map(item -> {
+                    Vehicle vehicle = vehicleRepository.findById(item.getVehicleId()).orElse(null);
+                    return new CartResponseDto(item.getId(), item.getQuantity(), vehicle);
+                })
+                .toList();
     }
 }

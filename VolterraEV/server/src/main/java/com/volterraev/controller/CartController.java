@@ -1,6 +1,7 @@
 package com.volterraev.controller;
 
 import com.volterraev.dto.CartDto;
+import com.volterraev.dto.CartResponseDto;
 import com.volterraev.model.Cart;
 import com.volterraev.service.CartService;
 import org.springframework.http.ResponseEntity;
@@ -27,8 +28,8 @@ public class CartController {
     }
 
     @GetMapping("/{userId}")
-    public ResponseEntity<List<Cart>> getCart(@PathVariable String userId) {
-        return ResponseEntity.ok(cartService.getUserCart(userId));
+    public ResponseEntity<List<CartResponseDto>> getCart(@PathVariable String userId) {
+        return ResponseEntity.ok(cartService.getUserCartWithVehicle(userId));
     }
 
     @DeleteMapping("/remove")
