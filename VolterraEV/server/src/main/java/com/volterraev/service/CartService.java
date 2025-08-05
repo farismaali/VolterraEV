@@ -6,6 +6,8 @@ import com.volterraev.model.Vehicle;
 import com.volterraev.repository.CartRepository;
 import com.volterraev.repository.VehicleRepository;
 
+import jakarta.transaction.Transactional;
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -39,6 +41,7 @@ public class CartService {
         return cartRepository.findByUserId(userId);
     }
 
+    @Transactional
     public void removeFromCart(String userId, Long vehicleId) {
         cartRepository.deleteByUserIdAndVehicleId(userId, vehicleId);
     }
